@@ -140,7 +140,7 @@ export function ResearchShell({ children }: { children: ReactNode }) {
               </div>
             </div>
           </header>
-          <main className="main-content">{children}</main>
+          <main className={`main-content ${path === "/" ? "hospital-main" : ""}`}>{children}</main>
           <footer className="workspace-footer">
             <span>
               <ShieldCheck size={13} /> Isolated research environment · No live hospital connection
