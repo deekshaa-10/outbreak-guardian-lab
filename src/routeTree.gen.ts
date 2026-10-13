@@ -10,33 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OutbreakRouteImport } from './routes/outbreak'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OutbreakRoute = OutbreakRouteImport.update({
+  id: '/outbreak',
+  path: '/outbreak',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/outbreak': typeof OutbreakRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/outbreak': typeof OutbreakRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/outbreak': typeof OutbreakRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/outbreak'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/outbreak'
+  id: '__root__' | '/' | '/outbreak'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  OutbreakRoute: typeof OutbreakRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/outbreak': {
+      id: '/outbreak'
+      path: '/outbreak'
+      fullPath: '/outbreak'
+      preLoaderRoute: typeof OutbreakRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  OutbreakRoute: OutbreakRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
