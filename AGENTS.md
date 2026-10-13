@@ -8,3 +8,9 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## PatientZero architecture
+- Keep synthetic research fixtures and derivations in `src/lib/research-data.ts`, separate from future observed-data adapters; every view must derive from consistent records.
+- The root route owns the persistent research shell and scenario context; scenario selection applies across all research modules without a backend.
+- Replay is a client-side deterministic timeline over fixture events, not a scientific transmission or counterfactual engine; unavailable scientific outputs stay explicit.
+- Define visual roles in `src/styles.css` and reuse the research panels and design-system Button for consistent accessible controls.
