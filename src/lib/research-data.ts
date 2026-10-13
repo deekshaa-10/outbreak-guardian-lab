@@ -12,23 +12,24 @@ export const wards: Ward[] = [
 export interface Device { id: string; name: string; wardId: string; type: DeviceType; critical: boolean; synthetic: true; address: string }
 export const devices: Device[] = wards.flatMap((ward, wi) => Array.from({ length: ward.count }, (_, i) => ({
   id: `${ward.short}-${String(i + 1).padStart(3, '0')}`, name: `${deviceTypes[(i + wi) % deviceTypes.length]} ${String(i + 1).padStart(2, '0')}`,
-  wardId: ward.id, type: deviceTypes[(i + wi) % deviceTypes.length], critical: (i + wi) % 6 === 1 || (i + wi) % 6 === 2,
+  wardId: ward.id, type: deviceTypes[(i + wi) % deviceTypes.length] ?? deviceTypes[0], critical: (i + wi) % 6 === 1 || (i + wi) % 6 === 2,
   synthetic: true, address: `10.42.${wi + 1}.${i + 10}`,
 })));
-export const connections = devices.slice(1).map((device, i) => ({ id: `edge-${i}`, source: devices[i].id, target: device.id, relationship: 'synthetic adjacency' as const, synthetic: true }));
+export const connections = devices.slice(1).map((device, i) => ({ id: `edge-${i}`, source: devices[i]?.id ?? device.id, target: device.id, relationship: 'synthetic adjacency' as const, synthetic: true }));
 export const scenarios = [
   { id: 'baseline', name: 'Mirai · Baseline outbreak', short: 'Baseline outbreak', description: 'Uncontained lateral propagation across seven modeled wards.', seed: 0, infections: 38, provenance: 'Deterministic synthetic fixtures' },
   { id: 'localized', name: 'Mirai · Localized outbreak', short: 'Localized outbreak', description: 'A smaller outbreak seeded in emergency care; no policy intervention is modeled.', seed: 1, infections: 23, provenance: 'Deterministic synthetic fixtures' },
 ] as const;
 export type ScenarioId = typeof scenarios[number]['id'];
-export interface OutbreakEvent { id: string; minute: number; stage: Stage; sourceId: string; destinationId?: string; wardId: string; severity: 'High' | 'Medium' | 'Low'; synthetic: true }
+export interface OutbreakEvent { id: string; minute: number; stage: Stage; sourceId: string; destinationId?: string | undefined; wardId: string; severity: 'High' | 'Medium' | 'Low'; synthetic: true }
 export function getEvents(scenarioId: ScenarioId): OutbreakEvent[] {
   const scenario = scenarios.find(s => s.id === scenarioId) ?? scenarios[0];
   return Array.from({ length: scenario.infections }, (_, i) => {
     const device = devices[(i * 17 + scenario.seed * 25) % devices.length];
+    if (!device) return [];
     const start = Math.floor(i * 49 / scenario.infections) + 1;
     return stages.map((stage, si) => ({ id: `${scenarioId}-${i}-${si}`, minute: Math.min(58, start + si * 2), stage,
-      sourceId: device.id, destinationId: si === 0 || si === 4 ? devices[((i + 1) * 17 + scenario.seed * 25) % devices.length].id : undefined,
+      sourceId: device.id, destinationId: si === 0 || si === 4 ? devices[((i + 1) * 17 + scenario.seed * 25) % devices.length]?.id : undefined,
       wardId: device.wardId, severity: (si >= 3 ? 'High' : si >= 1 ? 'Medium' : 'Low') as OutbreakEvent['severity'], synthetic: true as const }));
   }).flat().sort((a, b) => a.minute - b.minute || a.id.localeCompare(b.id));
 }
