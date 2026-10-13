@@ -10,11 +10,30 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DiagnosisRouteImport } from './routes/diagnosis'
+import { Route as MethodologyRouteImport } from './routes/methodology'
+import { Route as MonitorIntegrityRouteImport } from './routes/monitor-integrity'
 import { Route as OutbreakRouteImport } from './routes/outbreak'
+import { Route as QuarantineRouteImport } from './routes/quarantine'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiagnosisRoute = DiagnosisRouteImport.update({
+  id: '/diagnosis',
+  path: '/diagnosis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MethodologyRoute = MethodologyRouteImport.update({
+  id: '/methodology',
+  path: '/methodology',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MonitorIntegrityRoute = MonitorIntegrityRouteImport.update({
+  id: '/monitor-integrity',
+  path: '/monitor-integrity',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OutbreakRoute = OutbreakRouteImport.update({
@@ -22,31 +41,71 @@ const OutbreakRoute = OutbreakRouteImport.update({
   path: '/outbreak',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuarantineRoute = QuarantineRouteImport.update({
+  id: '/quarantine',
+  path: '/quarantine',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/diagnosis': typeof DiagnosisRoute
+  '/methodology': typeof MethodologyRoute
+  '/monitor-integrity': typeof MonitorIntegrityRoute
   '/outbreak': typeof OutbreakRoute
+  '/quarantine': typeof QuarantineRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/diagnosis': typeof DiagnosisRoute
+  '/methodology': typeof MethodologyRoute
+  '/monitor-integrity': typeof MonitorIntegrityRoute
   '/outbreak': typeof OutbreakRoute
+  '/quarantine': typeof QuarantineRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/diagnosis': typeof DiagnosisRoute
+  '/methodology': typeof MethodologyRoute
+  '/monitor-integrity': typeof MonitorIntegrityRoute
   '/outbreak': typeof OutbreakRoute
+  '/quarantine': typeof QuarantineRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/outbreak'
+  fullPaths:
+    | '/'
+    | '/diagnosis'
+    | '/methodology'
+    | '/monitor-integrity'
+    | '/outbreak'
+    | '/quarantine'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/outbreak'
-  id: '__root__' | '/' | '/outbreak'
+  to:
+    | '/'
+    | '/diagnosis'
+    | '/methodology'
+    | '/monitor-integrity'
+    | '/outbreak'
+    | '/quarantine'
+  id:
+    | '__root__'
+    | '/'
+    | '/diagnosis'
+    | '/methodology'
+    | '/monitor-integrity'
+    | '/outbreak'
+    | '/quarantine'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DiagnosisRoute: typeof DiagnosisRoute
+  MethodologyRoute: typeof MethodologyRoute
+  MonitorIntegrityRoute: typeof MonitorIntegrityRoute
   OutbreakRoute: typeof OutbreakRoute
+  QuarantineRoute: typeof QuarantineRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +117,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/diagnosis': {
+      id: '/diagnosis'
+      path: '/diagnosis'
+      fullPath: '/diagnosis'
+      preLoaderRoute: typeof DiagnosisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/methodology': {
+      id: '/methodology'
+      path: '/methodology'
+      fullPath: '/methodology'
+      preLoaderRoute: typeof MethodologyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/monitor-integrity': {
+      id: '/monitor-integrity'
+      path: '/monitor-integrity'
+      fullPath: '/monitor-integrity'
+      preLoaderRoute: typeof MonitorIntegrityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/outbreak': {
       id: '/outbreak'
       path: '/outbreak'
@@ -65,12 +145,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OutbreakRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/quarantine': {
+      id: '/quarantine'
+      path: '/quarantine'
+      fullPath: '/quarantine'
+      preLoaderRoute: typeof QuarantineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DiagnosisRoute: DiagnosisRoute,
+  MethodologyRoute: MethodologyRoute,
+  MonitorIntegrityRoute: MonitorIntegrityRoute,
   OutbreakRoute: OutbreakRoute,
+  QuarantineRoute: QuarantineRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
