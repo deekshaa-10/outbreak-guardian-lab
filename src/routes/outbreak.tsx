@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { HospitalSimulator } from "@/components/research/hospital-simulator";
+import { HospitalSimulator } from "@/components/research/hospital-workspace";
 import { wards, researchHead } from "@/lib/research-data";
 export const Route = createFileRoute("/outbreak")({
   validateSearch: (s: Record<string, unknown>) => ({

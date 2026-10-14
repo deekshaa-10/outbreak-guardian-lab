@@ -1,24 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { devices, connections, wards } from "@/lib/research-data";
-import { hospitalEquipment, hospitalRooms, equipmentPosition } from "@/lib/hospital-layout";
-
-describe("Fictional hospital spatial mapping", () => {
-  it("places every fixture device exactly once in its ward", () => {
-    expect(hospitalEquipment).toHaveLength(devices.length);
-    expect(equipmentPosition.size).toBe(devices.length);
-    expect(hospitalRooms.map(room => room.wardId).sort()).toEqual(wards.map(ward => ward.id).sort());
-    for (const item of hospitalEquipment) {
-      expect(hospitalRooms.some(room => room.wardId === item.device.wardId)).toBe(true);
-      expect(item.x).toBeGreaterThan(0);
-      expect(item.x).toBeLessThan(1200);
-      expect(item.y).toBeGreaterThan(0);
-      expect(item.y).toBeLessThan(800);
-    }
-  });
-  it("resolves both ends of every existing synthetic adjacency", () => {
-    for (const link of connections) {
-      expect(equipmentPosition.has(link.source)).toBe(true);
-      expect(equipmentPosition.has(link.target)).toBe(true);
-    }
-  });
+import { devices as fixtures, wards } from "@/lib/research-data";
+import { devices } from "@/sim/devices";
+import { rooms } from "@/scene/layout";
+import { toScreen } from "@/scene/grid";
+describe("Data-built isometric hospital",()=>{
+ it("uses standard 2:1 projection",()=>{expect(toScreen(1,0)).toEqual({x:24,y:12});expect(toScreen(0,1)).toEqual({x:-24,y:12});});
+ it("places every shared fixture once in a real room",()=>{
+  expect(devices).toHaveLength(fixtures.length);expect(new Set(devices.map(d=>d.id)).size).toBe(124);
+  expect(rooms.filter(r=>r.wardId).map(r=>r.wardId).sort()).toEqual(wards.map(w=>w.id).sort());
+  for(const d of devices){const r=rooms.find(r=>r.id===d.roomId);expect(r).toBeDefined();if(!r)continue;expect(d.gridX).toBeGreaterThanOrEqual(r.x);expect(d.gridX).toBeLessThan(r.x+r.width);expect(d.gridY).toBeGreaterThanOrEqual(r.y);expect(d.gridY).toBeLessThan(r.y+r.height);}
+ });
 });
