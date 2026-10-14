@@ -46,7 +46,7 @@ export function HospitalScene({mode,ward,selected,visibleIds,zoom,onZoom,onWard,
         if(obj.kind==="furniture")return <g key={obj.f.id} transform={`translate(${p.x},${p.y})`} className="iso-furniture"><ObjectSprite type={obj.f.type}/></g>;
         const d=obj.d;
         return <g key={d.id} transform={`translate(${p.x},${p.y})`} data-device-id={d.id} role="button" tabIndex={0} aria-label={`Inspect ${d.id}`} className={`iso-device ${selected===d.id?"selected":""}`} onClick={()=>onDevice(d.id)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onDevice(d.id);}}} onMouseEnter={()=>setHovered(d.id)} onMouseLeave={()=>setHovered(undefined)} onFocus={()=>setHovered(d.id)} onBlur={()=>setHovered(undefined)}>
-          <title>{d.id} · {d.type} · {d.wardId}</title><rect className="iso-device-hit" x={-hit/2} y={-hit+8} width={hit} height={hit} rx="4"/><ObjectSprite type={d.sprite}/>{mode!=="hospital"&&<circle className="iso-network-node" cy="-10" r="4"/>}
+          <title>{`${d.id} · ${d.type} · ${d.wardId}`}</title><rect className="iso-device-hit" x={-hit/2} y={-hit+8} width={hit} height={hit} rx="4"/><ObjectSprite type={d.sprite}/>{mode!=="hospital"&&<circle className="iso-network-node" cy="-10" r="4"/>}
         </g>;
       })}
       {hovered&&(()=>{const d=deviceMap.get(hovered);if(!d)return null;const p=toScreen(d.gridX,d.gridY);return <g className="iso-tooltip" transform={`translate(${p.x},${p.y-63})`}><rect x="-100" y="-15" width="200" height="32" rx="4"/><text textAnchor="middle" y="-2">{d.id} · {d.type}</text><text className="tooltip-secondary" textAnchor="middle" y="10">Synthetic equipment · {d.wardId.toUpperCase()}</text></g>;})()}

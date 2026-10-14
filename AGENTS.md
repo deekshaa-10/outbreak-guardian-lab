@@ -15,3 +15,4 @@
 - Replay is a client-side deterministic timeline over fixture events, not a scientific transmission or counterfactual engine; unavailable scientific outputs stay explicit.
 - Define visual roles in `src/styles.css` and reuse the research panels and design-system Button for consistent accessible controls.
 - Overview and Outbreak Replay share the immersive hospital workspace; a separate scene renderer and structured fictional spatial layout display the existing fixture timeline without generating events, keeping research state independent of presentation.
+- `src/scene` owns isometric projection, room geometry and reusable SVG object sprites; `src/sim/devices.ts` extends the shared research fixtures with spatial positions rather than duplicating simulation identities.
