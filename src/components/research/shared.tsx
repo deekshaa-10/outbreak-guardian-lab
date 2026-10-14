@@ -45,7 +45,7 @@ export function ResearchShell({ children }: { children: ReactNode }) {
   const current = nav.find((n) => n.to === path);
   return (
     <ResearchContext.Provider value={{ scenario, setScenario }}>
-      <div className="app-shell">
+      <div className={`app-shell ${path === "/" || path === "/outbreak" ? "simulation-shell" : ""}`}>
         {open && <div className="mobile-scrim" onClick={() => setOpen(false)} />}
         <aside className={`sidebar ${open ? "is-open" : ""}`}>
           <Link to="/" className="brand" onClick={() => setOpen(false)}>
@@ -140,7 +140,7 @@ export function ResearchShell({ children }: { children: ReactNode }) {
               </div>
             </div>
           </header>
-          <main className={`main-content ${path === "/" ? "hospital-main" : ""}`}>{children}</main>
+          <main className={`main-content ${path === "/" || path === "/outbreak" ? "hospital-main" : ""}`}>{children}</main>
           <footer className="workspace-footer">
             <span>
               <ShieldCheck size={13} /> Isolated research environment · No live hospital connection
