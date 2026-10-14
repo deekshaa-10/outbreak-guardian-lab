@@ -8,9 +8,9 @@
 - [x] Verify hospital controls, navigation, and responsive layouts
 
 ## Immersive hospital redesign
-- [ ] Replace whole-scene raster with data-defined SVG tiles, walls, furniture and all 124 device sprites
-- [ ] Add standard isometric projection, registry positions, depth sorting, static staff, wheel/pinch pan and zoom
-- [ ] Establish a structured interactive hospital scene on Overview and Outbreak Replay
-- [ ] Add room/equipment inspection, network and outbreak overlays, and compact contextual tools
-- [ ] Connect playback, speed, filters, timeline markers, and history to shared fixtures
-- [ ] Verify interactions, existing routes, and desktop/mobile layouts
+- [x] Replace whole-scene raster with data-defined SVG tiles, walls, furniture and all 124 device sprites
+- [x] Add standard isometric projection, registry positions, depth sorting, static staff, wheel/pinch pan and zoom
+- [x] Establish a structured interactive hospital scene on Overview and Outbreak Replay
+- [x] Add room/equipment inspection, network overlay, view selection and compact contextual tools (infection colours deliberately deferred)
+- [x] Connect playback, speed, filters, timeline markers, and history to shared fixtures
+- [x] Verify interactions, existing routes, and desktop/mobile layouts
