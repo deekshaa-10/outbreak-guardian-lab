@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { rooms, corridorTiles, furniture } from "@/scene/layout";
 import { toScreen, tilePoints } from "@/scene/grid";
 import { ObjectSprite } from "@/scene/sprites";
@@ -11,17 +11,17 @@ export function HospitalScene({mode,ward,selected,visibleIds,zoom,onZoom,onWard,
 }) {
   const [pan,setPan]=useState({x:0,y:0});
   const [hovered,setHovered]=useState<string>();
-  const [width,setWidth]=useState(1200);
+  const [screenScale,setScreenScale]=useState(.5);
   const pointers=useRef(new Map<number,{x:number;y:number}>());
   const gesture=useRef<{distance:number;zoom:number}|null>(null);
   const svg=useRef<SVGSVGElement>(null);
+  useEffect(()=>{const element=svg.current;if(!element)return;const observer=new ResizeObserver(()=>{const box=element.getBoundingClientRect();setScreenScale(Math.min(box.width/1500,box.height/870));});observer.observe(element);return()=>observer.disconnect();},[]);
   const deviceMap=new Map(devices.map(d=>[d.id,d]));
   const drawn=[...furniture.filter(f=>f.type!=="staff"||mode==="hospital").map(f=>({kind:"furniture" as const,gx:f.gx,gy:f.gy,f})),...devices.filter(d=>visibleIds.has(d.id)).map(d=>({kind:"device" as const,gx:d.gridX,gy:d.gridY,d}))].sort((a,b)=>a.gx+a.gy-b.gx-b.gy || a.gx-b.gx);
-  const hit=Math.max(34,24*1500/Math.max(width,1)/zoom);
+  const hit=Math.max(34,24/Math.max(screenScale,.1)/zoom);
   function distance(){const [a,b]=Array.from(pointers.current.values());return a&&b?Math.hypot(a.x-b.x,a.y-b.y):0;}
   return <svg ref={svg} className="tile-hospital-scene" viewBox="-750 -85 1500 870" role="group" aria-label="Interactive isometric hospital" onWheel={e=>{e.preventDefault();onZoom(Math.max(.6,Math.min(2.8,zoom*(e.deltaY<0?1.1:.9))));}} onPointerDown={e=>{
-    setWidth(e.currentTarget.getBoundingClientRect().width);
-    if((e.target as Element).closest('[data-device-id],[data-room-id]')) return;
+    if(e.pointerType!=="touch"&&(e.target as Element).closest('[data-device-id],[data-room-id]')) return;
     pointers.current.set(e.pointerId,{x:e.clientX,y:e.clientY});e.currentTarget.setPointerCapture(e.pointerId);
     if(pointers.current.size===2) gesture.current={distance:distance(),zoom};
   }} onPointerMove={e=>{
@@ -46,7 +46,7 @@ export function HospitalScene({mode,ward,selected,visibleIds,zoom,onZoom,onWard,
         if(obj.kind==="furniture")return <g key={obj.f.id} transform={`translate(${p.x},${p.y})`} className="iso-furniture"><ObjectSprite type={obj.f.type}/></g>;
         const d=obj.d;
         return <g key={d.id} transform={`translate(${p.x},${p.y})`} data-device-id={d.id} role="button" tabIndex={0} aria-label={`Inspect ${d.id}`} className={`iso-device ${selected===d.id?"selected":""}`} onClick={()=>onDevice(d.id)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onDevice(d.id);}}} onMouseEnter={()=>setHovered(d.id)} onMouseLeave={()=>setHovered(undefined)} onFocus={()=>setHovered(d.id)} onBlur={()=>setHovered(undefined)}>
-          <title>{`${d.id} · ${d.type} · ${d.wardId}`}</title><rect className="iso-device-hit" x={-hit/2} y={-hit+8} width={hit} height={hit} rx="4"/><ObjectSprite type={d.sprite}/>{mode!=="hospital"&&<circle className="iso-network-node" cy="-10" r="4"/>}
+          <title>{`${d.id} · ${d.type} · ${d.wardId}`}</title><rect className="iso-device-hit" x={-hit/2} y={-hit+8} width={hit} height={hit} rx="4"/><g transform={d.sprite==="imaging_system"?"scale(.55)":undefined}><ObjectSprite type={d.sprite}/></g>{mode!=="hospital"&&<circle className="iso-network-node" cy="-10" r="4"/>}
         </g>;
       })}
       {hovered&&(()=>{const d=deviceMap.get(hovered);if(!d)return null;const p=toScreen(d.gridX,d.gridY);return <g className="iso-tooltip" transform={`translate(${p.x},${p.y-63})`}><rect x="-100" y="-15" width="200" height="32" rx="4"/><text textAnchor="middle" y="-2">{d.id} · {d.type}</text><text className="tooltip-secondary" textAnchor="middle" y="10">Synthetic equipment · {d.wardId.toUpperCase()}</text></g>;})()}
