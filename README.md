@@ -42,7 +42,7 @@ Running it yourself
 Edit it in the Lovable editor. Changes made there sync to this repository automatically.
 
 To run it on your own computer, you need Node.js installed. Then:
-git clone <this-repository-url>
-cd <repository-name>
+git clone https://github.com/deekshaa-10/outbreak-guardian-lab.git
+cd outbreak-guardian-lab
 npm i
 npm run dev
