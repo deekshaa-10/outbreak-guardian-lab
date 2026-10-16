@@ -16,6 +16,12 @@ In 2016, a piece of malware called Mirai took over hundreds of thousands of inte
 
 Hospitals are full of connected devices: bedside monitors, infusion pumps, ventilators, scanners, workstations. PatientZero asks what a Mirai-style outbreak would look like there.
 
+The hospital
+
+A synthetic hospital network of 124 devices across 7 wards, 42 of them care-critical:
+
+ICU · Emergency · Neonatal · General Ward · Operating Theatre · Radiology · Hospital Administration
+
 What's inside
 Module	What it explores
 Outbreak Replay	Watch the outbreak unfold across seven wards on a 58-minute timeline. Play, pause, scrub back, and inspect any device.
@@ -23,17 +29,13 @@ Quarantine Policy Lab	Run the same outbreak under different containment strategi
 Infection Diagnosis	Classify network alerts into six attack stages: scanning, password guessing, malware download, command and control, spreading, and DDoS.
 Is the Monitor Lying?	Explore how a tampered patient-monitor signal might be told apart from a real one.
 Methodology & Data	The rules of the simulation, its assumptions, and where the data comes from.
-Current status
-
-Done: application layout, navigation, design system, synthetic hospital of 124 devices across 7 wards (42 care-critical), filters and module pages.
-In progress: the simulation engine that generates the outbreak, so that pressing Play actually runs it.
-Planned: interactive hospital floor view with clickable devices, policy comparisons, and the two ML experiments.
-
-Module pages show clear "pending" states where results don't exist yet. Nothing is faked.
-
 Built with
 
 React, TypeScript, Tailwind CSS and Recharts, built with Lovable.
+
+Running it yourself
+
+You need Node.js installed. Then:
 
 To run it on your own computer, you need Node.js installed. Then:
 ```sh
