@@ -25,8 +25,6 @@ Is the Monitor Lying?	Explore how a tampered patient-monitor signal might be tol
 Methodology & Data	The rules of the simulation, its assumptions, and where the data comes from.
 Current status
 
-This is an early, work-in-progress build.
-
 Done: application layout, navigation, design system, synthetic hospital of 124 devices across 7 wards (42 care-critical), filters and module pages.
 In progress: the simulation engine that generates the outbreak, so that pressing Play actually runs it.
 Planned: interactive hospital floor view with clickable devices, policy comparisons, and the two ML experiments.
@@ -37,12 +35,10 @@ Built with
 
 React, TypeScript, Tailwind CSS and Recharts, built with Lovable.
 
-Running it yourself
-
-Edit it in the Lovable editor. Changes made there sync to this repository automatically.
-
 To run it on your own computer, you need Node.js installed. Then:
+```sh
 git clone https://github.com/deekshaa-10/outbreak-guardian-lab.git
 cd outbreak-guardian-lab
 npm i
 npm run dev
+```
